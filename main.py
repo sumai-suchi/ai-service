@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.routes.chat import router as chat_router
+from app.routes.operations import router as operations_router
 
 app = FastAPI(title="ParcelPilot AI Service", version="1.0.0")
 
@@ -13,8 +14,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Chat router যুক্ত করা
+# Routers যুক্ত করা
 app.include_router(chat_router)
+app.include_router(operations_router)
 
 
 @app.get("/health")
