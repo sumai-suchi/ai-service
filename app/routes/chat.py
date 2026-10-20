@@ -17,7 +17,14 @@ async def chat_endpoint(request: CustomerChatRequest):
         }
 
         result = await shipment_agent.ainvoke(initial_state)
-        ai_reply = result["messages"][-1].content
+        raw_content = result["messages"][-1].content
+        if isinstance(raw_content, list):
+            ai_reply = "".join(
+                item.get("text", "") if isinstance(item, dict) else str(item)
+                for item in raw_content
+            )
+        else:
+            ai_reply = str(raw_content)
         data = result.get("shipment_data") or {}
 
         return CustomerChatResponse(
