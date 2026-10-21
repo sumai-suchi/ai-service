@@ -1,9 +1,18 @@
+from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.routes.chat import router as chat_router
 from app.routes.operations import router as operations_router
+from app.rag.retriever import get_vector_store
 
-app = FastAPI(title="ParcelPilot AI Service", version="1.0.0")
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # সার্ভার বুট হওয়ার সময়ই ভেক্টর স্টোর লোড হয়ে থাকবে
+    get_vector_store()
+    yield
+
+app = FastAPI(title="ParcelPilot AI Service", version="1.0.0", lifespan=lifespan)
 
 # Frontend থেকে রিকোয়েস্ট পাওয়ার জন্য CORS
 app.add_middleware(
@@ -19,6 +28,9 @@ app.include_router(chat_router)
 app.include_router(operations_router)
 
 
+
 @app.get("/health")
 def health_check():
     return {"status": "ok", "service": "ParcelPilot AI"}
+
+

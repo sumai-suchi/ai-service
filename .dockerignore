@@ -1,0 +1,9 @@
+.venv
+.venv313
+.env
+__pycache__
+*.pyc
+.git
+.gitignore
+.vscode
+tests
