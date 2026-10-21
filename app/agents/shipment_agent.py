@@ -6,19 +6,14 @@ from dotenv import load_dotenv
 
 from langgraph.graph import StateGraph, START, END
 from langchain_core.messages import SystemMessage, HumanMessage, AIMessage
-from langchain_google_genai import ChatGoogleGenerativeAI
+from app.core.llm import llm
 from app.rag.retriever import retrieve_policy_context
 
 from app.tools.shipment_tools import fetch_shipment_details
 
+
 load_dotenv()
 
-# Fast & stable Gemini Model
-llm = ChatGoogleGenerativeAI(
-    model="gemini-2.5-flash",
-    temperature=0.1,
-    google_api_key=os.getenv("GEMINI_API_KEY"),
-)
 
 TRACKING_REGEX = re.compile(r"\b(PP-[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*)\b", re.IGNORECASE)
 

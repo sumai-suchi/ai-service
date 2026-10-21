@@ -5,18 +5,12 @@ from dotenv import load_dotenv
 
 from langgraph.graph import StateGraph, START, END
 from langchain_core.messages import SystemMessage, HumanMessage, AIMessage
-from langchain_google_genai import ChatGoogleGenerativeAI
+from app.core.llm import llm
 
 from app.tools.operations_tools import fetch_operations_summary
 
 load_dotenv()
 
-# Fast & stable Gemini Model
-llm = ChatGoogleGenerativeAI(
-    model="gemini-2.5-flash",
-    temperature=0.2,
-    google_api_key=os.getenv("GEMINI_API_KEY"),
-)
 
 
 # Agent State
